@@ -1,0 +1,54 @@
+{
+	"name": "pizza_customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saranyalinkedservice",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "STG_CUSTOMERS.csv",
+				"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
+				"fileSystem": "saranyadata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "CUSTOMER_ID",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMER_FIRST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMER_LAST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMER_DOB",
+				"type": "String"
+			},
+			{
+				"name": "CUSTOMER_TYPE",
+				"type": "String"
+			},
+			{
+				"name": "IS_LOYAL",
+				"type": "String"
+			},
+			{
+				"name": "FIRST_PURCHASE_DATE",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,38 @@
+{
+	"name": "u3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saranyalinkedservice",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "STG_PRODUCT_SUB_CATEGORY.csv",
+				"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
+				"fileSystem": "saranyadata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "emp_id",
+				"type": "String"
+			},
+			{
+				"name": "emp_name",
+				"type": "String"
+			},
+			{
+				"name": "dept_name",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

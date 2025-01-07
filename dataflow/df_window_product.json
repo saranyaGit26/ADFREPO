@@ -1,0 +1,69 @@
+{
+	"name": "df_window_product",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dfsrc",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TGTdataset",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "window1"
+				},
+				{
+					"name": "cast1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as string,",
+				"          CustomerName as string,",
+				"          ProductCategory as string,",
+				"          Quantity as short,",
+				"          UnitPrice as short,",
+				"          SaleDate as date,",
+				"          Region as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"cast1 window(over(ProductCategory,",
+				"          Region),",
+				"     asc(CustomerID, true),",
+				"     asc(SaleDate, true),",
+				"     total_sales = toInteger(sum(Quantity * UnitPrice) ),",
+				"          region_saledate = toInteger(sum(Quantity * UnitPrice) )) ~> window1",
+				"source1 cast(output(",
+				"          CustomerID as string,",
+				"          ProductCategory as string,",
+				"          Quantity as double,",
+				"          UnitPrice as double,",
+				"          SaleDate as date",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"window1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

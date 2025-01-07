@@ -1,0 +1,46 @@
+{
+	"name": "Tgt_DataLoad",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saranyalinkedservice",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"targrtfilename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat(dataset().targrtfilename,'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
+				"fileSystem": "saranyadata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "COUNTRY_ID",
+				"type": "String"
+			},
+			{
+				"name": "COUNTRY_NAME",
+				"type": "String"
+			},
+			{
+				"name": "REGION_ID",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

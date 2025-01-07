@@ -1,0 +1,58 @@
+{
+	"name": "producttoppingtgt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Product_Topping_Dim_Key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Product_Topping_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Topping_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Topping_Price",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "Is_Active",
+				"type": "varchar"
+			},
+			{
+				"name": "Effective_Date",
+				"type": "date"
+			},
+			{
+				"name": "END_DATE",
+				"type": "date"
+			},
+			{
+				"name": "Flag",
+				"type": "varchar"
+			},
+			{
+				"name": "DM_CREATE_DATE",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "hr",
+			"table": "PRODUCT_TOPPINGS_DIM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

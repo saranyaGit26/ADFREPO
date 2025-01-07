@@ -1,0 +1,79 @@
+{
+	"name": "scd2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Surr_Product_kEY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Product_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Product_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Product_Price",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 2
+			},
+			{
+				"name": "Is_Active",
+				"type": "varchar"
+			},
+			{
+				"name": "PRODUCT_CATEGORY_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "Product_Category_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Product_SubCategory_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Product_SubCategory_Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Product_Size",
+				"type": "varchar"
+			},
+			{
+				"name": "Product_Description",
+				"type": "varchar"
+			},
+			{
+				"name": "Eff_Start_Date",
+				"type": "date"
+			},
+			{
+				"name": "Eff_End_Date",
+				"type": "date"
+			},
+			{
+				"name": "DM_CREATE_DATE",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "hr",
+			"table": "product_dim_scd2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,83 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dfsrc",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TGTdataset",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     discount_price as float (0.9)",
+				"}",
+				"source(output(",
+				"          CustomerID as string,",
+				"          CustomerName as string,",
+				"          ProductCategory as string,",
+				"          Quantity as short,",
+				"          UnitPrice as short,",
+				"          SaleDate as date,",
+				"          Region as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(first_name = split(CustomerName,' ')[1],",
+				"          last_name = split(CustomerName, ' ' )[2],",
+				"          quantity = Quantity * UnitPrice * (\r",
+				"    case(\r",
+				"        Region == 'North', 1.08,\r",
+				"        Region == 'South', 1.05,\r",
+				"        Region == 'East', 1.4,\r",
+				"        1.6\r",
+				"    )\r",
+				"),",
+				"          north_tax = Quantity * UnitPrice * \r",
+				"    (iif(Region == 'North', :local1, \r",
+				"        iif(Region == 'South', :local2, \r",
+				"            iif(Region == 'East', :local3, \r",
+				"                :local4\r",
+				"            )\r",
+				"        )\r",
+				"    )\r",
+				"),",
+				"          final_amount = Quantity * UnitPrice * ( case ( Region== 'North' , :local1 ,\r",
+				"                                Region==  'South', :local2,\r",
+				"                                Region==  'East', :local3,\r",
+				"                                :local4\r",
+				"                        )       ),",
+				"          local1 := 1.08,",
+				"          local2 := 1.05,",
+				"          local3 := 1.4,",
+				"          local4 := 1.6) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

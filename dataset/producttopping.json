@@ -1,0 +1,42 @@
+{
+	"name": "producttopping",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saranyalinkedservice",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "STG_PRODUCT_TOPPINGS.csv",
+				"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
+				"fileSystem": "saranyadata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "PRODUCT_TOPPING_ID",
+				"type": "String"
+			},
+			{
+				"name": "TOPPING_NAME",
+				"type": "String"
+			},
+			{
+				"name": "TOPING_PRICE",
+				"type": "String"
+			},
+			{
+				"name": "IS_ACTIVE",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

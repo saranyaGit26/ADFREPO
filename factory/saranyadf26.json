@@ -1,0 +1,9 @@
+{
+	"name": "saranyadf26",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b225e67d-3d41-4644-ada5-b28087ce78be",
+		"tenantId": "556a2bf1-1cfd-4527-8d4e-1ba27265cb13"
+	}
+}

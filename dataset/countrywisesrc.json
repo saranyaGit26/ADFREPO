@@ -1,0 +1,17 @@
+{
+	"name": "countrywisesrc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Oracle1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OracleTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "HR",
+			"table": "DEPARTMENTS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

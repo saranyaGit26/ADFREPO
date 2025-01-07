@@ -1,0 +1,107 @@
+{
+	"name": "pip_copy_data2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data txt to txt",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "sourcedataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "TGTdataset",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_tgt_filename",
+					"value": {
+						"value": "@concat(variables('final_name'),utcNow())",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"parm1": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"v_tgt_filename": {
+				"type": "String",
+				"defaultValue": "var_tgt_empwith_timestamp"
+			},
+			"final_name": {
+				"type": "String",
+				"defaultValue": "emp_"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-11-08T02:59:40Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
