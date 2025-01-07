@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "saranyadf26"
+		},
+		"AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"Oracle1_connectionString": {
+			"value": ""
+		},
+		"saranyalinkedservice_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "mysqlserversample.database.windows.net"
+		},
+		"AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "sqldatabase"
+		},
+		"AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "adfsqlserver"
+		},
+		"saranyalinkedservice_properties_typeProperties_url": {
+			"value": "https://saranyastorage.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
