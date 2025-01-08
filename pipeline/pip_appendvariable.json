@@ -34,7 +34,7 @@
 				"typeProperties": {
 					"variableName": "ArrayVar",
 					"value": {
-						"value": "@int(5)",
+						"value": "@int(10)",
 						"type": "Expression"
 					}
 				}
