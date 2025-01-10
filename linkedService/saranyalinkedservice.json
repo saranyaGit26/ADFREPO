@@ -1,12 +1,19 @@
 {
 	"name": "saranyalinkedservice",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "https://saranyastorage.dfs.core.windows.net/",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDMzM0IyN0MxLTY4RkUtNDM5Mi1BQUM5LTQ1QUIzQkM2RUY1Q19lNmM1NmQ5Zi05Zjk1LTRlMjYtYjE2My03ZjJjM2YyNGU3M2EiDQp9"
+			"accountKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_to_dev",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "gen2-accessfile"
+			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
