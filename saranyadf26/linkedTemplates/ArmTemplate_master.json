@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Oracle1'"
 		},
-		"saranyalinkedservice_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'saranyalinkedservice'"
-		},
 		"AzureSqlDatabase_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "mysqlserversample.database.windows.net"
@@ -30,6 +26,10 @@
 		"AzureSqlDatabase_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "adfsqlserver"
+		},
+		"ls_key_to_dev_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-saranya26-dev.vault.azure.net/"
 		},
 		"saranyalinkedservice_properties_typeProperties_url": {
 			"type": "string",
@@ -65,8 +65,8 @@
 					"AzureSqlDatabase_password": {
 						"value": "[parameters('AzureSqlDatabase_password')]"
 					},
-					"saranyalinkedservice_accountKey": {
-						"value": "[parameters('saranyalinkedservice_accountKey')]"
+					"Oracle1_connectionString": {
+						"value": "[parameters('Oracle1_connectionString')]"
 					},
 					"AzureSqlDatabase_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_server')]"
@@ -76,6 +76,9 @@
 					},
 					"AzureSqlDatabase_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_userName')]"
+					},
+					"ls_key_to_dev_properties_typeProperties_baseUrl": {
+						"value": "[parameters('ls_key_to_dev_properties_typeProperties_baseUrl')]"
 					},
 					"saranyalinkedservice_properties_typeProperties_url": {
 						"value": "[parameters('saranyalinkedservice_properties_typeProperties_url')]"
@@ -117,9 +120,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"Oracle1_connectionString": {
-						"value": "[parameters('Oracle1_connectionString')]"
 					}
 				}
 			},

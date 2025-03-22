@@ -11,9 +11,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase'"
 		},
-		"saranyalinkedservice_accountKey": {
+		"Oracle1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'saranyalinkedservice'"
+			"metadata": "Secure string for 'connectionString' of 'Oracle1'"
 		},
 		"AzureSqlDatabase_properties_typeProperties_server": {
 			"type": "string",
@@ -26,6 +26,10 @@
 		"AzureSqlDatabase_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "adfsqlserver"
+		},
+		"ls_key_to_dev_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-saranya26-dev.vault.azure.net/"
 		},
 		"saranyalinkedservice_properties_typeProperties_url": {
 			"type": "string",
@@ -298,18 +302,14 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/saranyalinkedservice')]",
+			"name": "[concat(parameters('factoryName'), '/ls_key_to_dev')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"type": "AzureBlobFS",
+				"type": "AzureKeyVault",
 				"typeProperties": {
-					"url": "[parameters('saranyalinkedservice_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('saranyalinkedservice_accountKey')]"
-					}
+					"baseUrl": "[parameters('ls_key_to_dev_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -408,214 +408,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "STG_CUSTOMER_PHONE_NUMBER.csv",
-						"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "name",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TGTdataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "avg_sal.csv",
-						"folderPath": "tgt_files",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": null
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Tgt_DataLoad')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"targrtfilename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@concat(dataset().targrtfilename,'.csv')",
-							"type": "Expression"
-						},
-						"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "COUNTRY_ID",
-						"type": "String"
-					},
-					{
-						"name": "COUNTRY_NAME",
-						"type": "String"
-					},
-					{
-						"name": "REGION_ID",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/address')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "STG_CUSTOMER_ADDRESS.csv",
-						"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/assig_tgt1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "STG_STATE_COUNTRY.csv",
-						"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/countrywise')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": "tgt_files/multisourcetgt/cointryid_eise",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/custdim')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -658,35 +450,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dfsrc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "derived_column_src.txt",
-						"folderPath": "src_files",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/dim')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -708,76 +471,338 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/filename')]",
+			"name": "[concat(parameters('factoryName'), '/locsc2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
+					"referenceName": "AzureSqlDatabase",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "src_files/sourcefile/withfilename",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/getmeta')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "saranyalinkedservice",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "assignment",
-						"fileSystem": "saranyadata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
+				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"type": "String"
+						"name": "Loc_Dim_Key",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"type": "String"
+						"name": "Store_Location_ID",
+						"type": "int",
+						"precision": 10
 					},
 					{
-						"type": "String"
+						"name": "Store_Name",
+						"type": "varchar"
 					},
 					{
-						"type": "String"
+						"name": "Store_Address",
+						"type": "varchar"
+					},
+					{
+						"name": "Store_Open_Time",
+						"type": "varchar"
+					},
+					{
+						"name": "Store_Close_Time",
+						"type": "varchar"
+					},
+					{
+						"name": "State_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "FLAG",
+						"type": "varchar"
+					},
+					{
+						"name": "DM_CREATE_DATE",
+						"type": "date"
 					}
-				]
+				],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "LOCATION_DIM1"
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/saranyalinkedservice')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/getmetadata')]",
+			"name": "[concat(parameters('factoryName'), '/loctgt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "employees"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pro_dim')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "PROMOTION_DIM"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/product')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "product_dim"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/producttoppingtgt')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Product_Topping_Dim_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Product_Topping_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Topping_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Topping_Price",
+						"type": "decimal",
+						"precision": 5,
+						"scale": 2
+					},
+					{
+						"name": "Is_Active",
+						"type": "varchar"
+					},
+					{
+						"name": "Effective_Date",
+						"type": "date"
+					},
+					{
+						"name": "END_DATE",
+						"type": "date"
+					},
+					{
+						"name": "Flag",
+						"type": "varchar"
+					},
+					{
+						"name": "DM_CREATE_DATE",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "PRODUCT_TOPPINGS_DIM"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/scd2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Surr_Product_kEY",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Product_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Product_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Product_Price",
+						"type": "decimal",
+						"precision": 5,
+						"scale": 2
+					},
+					{
+						"name": "Is_Active",
+						"type": "varchar"
+					},
+					{
+						"name": "PRODUCT_CATEGORY_ID",
+						"type": "varchar"
+					},
+					{
+						"name": "Product_Category_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Product_SubCategory_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Product_SubCategory_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Product_Size",
+						"type": "varchar"
+					},
+					{
+						"name": "Product_Description",
+						"type": "varchar"
+					},
+					{
+						"name": "Eff_Start_Date",
+						"type": "date"
+					},
+					{
+						"name": "Eff_End_Date",
+						"type": "date"
+					},
+					{
+						"name": "DM_CREATE_DATE",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "product_dim_scd2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sdc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "hr",
+					"table": "product_dim_scd2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Oracle1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Oracle",
+				"typeProperties": {
+					"connectionString": "[parameters('Oracle1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/saranyalinkedservice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('saranyalinkedservice_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_to_dev",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "gen2-accessfile"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_to_dev')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -790,7 +815,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "assignment",
+						"fileName": "STG_CUSTOMER_PHONE_NUMBER.csv",
+						"folderPath": "tgt_files/azure_pizza_project/STG_FILES",
 						"fileSystem": "saranyadata"
 					},
 					"columnDelimiter": ",",
@@ -800,15 +826,7 @@
 				},
 				"schema": [
 					{
-						"name": "ID",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "Age",
+						"name": "name",
 						"type": "String"
 					}
 				]

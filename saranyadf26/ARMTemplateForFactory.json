@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Oracle1'"
 		},
-		"saranyalinkedservice_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'saranyalinkedservice'"
-		},
 		"AzureSqlDatabase_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "mysqlserversample.database.windows.net"
@@ -30,6 +26,10 @@
 		"AzureSqlDatabase_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "adfsqlserver"
+		},
+		"ls_key_to_dev_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-saranya26-dev.vault.azure.net/"
 		},
 		"saranyalinkedservice_properties_typeProperties_url": {
 			"type": "string",
@@ -307,7 +307,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Set variable1",
+								"activity": "Set variable5",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -370,7 +370,7 @@
 						]
 					},
 					{
-						"name": "Set variable1",
+						"name": "Set variable5",
 						"type": "SetVariable",
 						"dependsOn": [],
 						"policy": {
@@ -5536,6 +5536,19 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_key_to_dev')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_key_to_dev_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/saranyalinkedservice')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -5545,12 +5558,18 @@
 				"typeProperties": {
 					"url": "[parameters('saranyalinkedservice_properties_typeProperties_url')]",
 					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('saranyalinkedservice_accountKey')]"
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_to_dev",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "gen2-accessfile"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_to_dev')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SelfHostedIR')]",
